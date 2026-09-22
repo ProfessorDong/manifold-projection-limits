@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+title: >-
+  Code for "Limits of Manifold Projection in Calibrated Channel and Clutter
+  Estimation"
+message: If you use this software, please cite both the software and the paper.
+type: software
+authors:
+  - given-names: Akram
+    family-names: Entezami
+    affiliation: Department of Electrical and Computer Engineering, Baylor University
+  - given-names: Liang
+    family-names: Dong
+    orcid: "https://orcid.org/0000-0002-8585-1087"
+    affiliation: Department of Electrical and Computer Engineering, Baylor University
+repository-code: "https://github.com/ProfessorDong/manifold-projection-limits"
+license: MIT
+version: "0.1.0"
+date-released: ""
+keywords:
+  - structured channel estimation
+  - clutter suppression
+  - model misspecification
+  - shrinkage estimation
+  - dense multipath
+  - integrated sensing and communication
+preferred-citation:
+  type: article
+  title: >-
+    Limits of Manifold Projection in Calibrated Channel and Clutter Estimation
+  authors:
+    - given-names: Akram
+      family-names: Entezami
+    - given-names: Liang
+      family-names: Dong
+  journal: IEEE Transactions on Signal Processing
+  year: 2026
+  notes: Submitted. Update with volume, pages and DOI on acceptance.

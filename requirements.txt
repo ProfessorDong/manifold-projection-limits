@@ -1,0 +1,5 @@
+# Versions this code was developed and verified with.
+numpy==2.2.6
+scipy==1.17.1
+matplotlib==3.10.8
+# Python 3.12.13
