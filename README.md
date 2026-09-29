@@ -36,7 +36,7 @@ and turns a three-second job into tens of CPU-minutes.
 |---|---|---|
 | Fig. 1 | none — TikZ schematic, no data | — |
 | Fig. 2, operating region | `sim/fig_C_operating_region.py` | `figs/data/figC_locus.dat`, `figC_marks.dat` |
-| Fig. 3, projection gain | `sim/fig_A_projection.py` | `figs/data/figA_pred_*.dat`, `figA_mc_*.dat`, `figA_diffuse.dat` |
+| Fig. 3, projection gain | `sim/fig_A_projection.py` | `figs/data/figA_pred_*.dat`, `figA_mc_*.dat` (incl. `*_nu0.05`, `*_nu0.5`), `figA_diffuse.dat` |
 | Fig. 4, sensing accuracy | `sim/fig_B_sensing.py` | `figs/data/figB_{diffuse,noise}_{delay,angle}.dat` |
 | Fig. 5, measured channels | `sim/exp_real_rproj.py` | `figs/data/figD_real.dat`, `figD_marks.dat` |
 
@@ -61,9 +61,12 @@ of Proposition 5 computed on the same target draws.
 | IV | per-chain drift deposits only ~47% of its energy in span(B) | `sim/verify_round2_claims.py` |
 | IV | the full-support example needs *independent* angle and delay | `sim/verify_round2_claims.py` |
 | IV | Table II quadrature law vs simulator law, gap 0.00093 | `sim/verify_round2_claims.py` |
+| IV | the crossover needs a persistent field: no crossover for `ρ_c ≤ 1/2` | `sim/verify_crossover_scope.py` |
 | V | 3 dB bound on the deterministic persistence weight | `sim/verify_akram_bounds.py` |
 | V | plug-in vs that bound: +0.1% isotropic, +6.6% rank-one | `sim/verify_two_epoch_plugin.py` |
-| V | scalar weight gives up 4.3 dB to the matrix Wiener filter | `sim/verify_general_cov.py` |
+| V | scalar weight gives up 11.7 dB (white noise) vs 4.3 dB (correlated) to the matrix Wiener filter | `sim/verify_parametric_dmc.py` |
+| V | a 3-parameter DMC fitted to one snapshot recovers all but 0.7–0.9 dB of it | `sim/verify_parametric_dmc.py` |
+| V | scalar theorem holds for arbitrary `C_n`, `C_d`; Wiener filter is the wider optimum | `sim/verify_general_cov.py` |
 | V | uniform dominance of the positive-part plug-in | `sim/verify_dominance.py` |
 | VI | payload-only, calibration-aware and clairvoyant bounds | `sim/crb_calaware.py` |
 | VI | payload-only Schur complement identity | `sim/crb_nuisance.py` |
@@ -75,6 +78,8 @@ of Proposition 5 computed on the same target draws.
 | VII-B | what the 32 selected snapshots cover | `sim/verify_offset_convention.py` |
 | VII-B | the 0.074 λ decorrelation is an artefact (control) | `sim/verify_coherence.py` |
 | VII-B | delay-compensated coherence 0.95 at one step | `sim/verify_sto_drift.py` |
+| VII-A | cyclic prefix and Doppler bins of Table I (3GPP TS 38.211) | `sim/verify_numerology.py` |
+| — | target-to-clutter sweep; the Fig. 4 ordering is TCR-invariant (not in the paper) | `sim/verify_tcr_sweep.py` |
 
 ### Libraries
 

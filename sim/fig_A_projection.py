@@ -8,7 +8,10 @@ from isac_core import Scenario, make_config, proj_energy
 C1,C2,C3 = "#2a78d6","#eb6834","#1baf7a"; MUT="#52514e"; INK="#0b0b0b"
 rng = np.random.default_rng(17)
 
-def R_meas(Nr,K,rhos,T=2000):
+def R_meas(Nr,K,rhos,T=2000,nu=0.0,rng=rng):
+    """nu = E||P_perp d||^2/(N sigma_perp^2), the normalized out-of-manifold
+    unmodeled energy of Prop. 1.  The field is persistent, so it cancels from the
+    raw error and appears only in the projected one."""
     B,Gi = make_config(Nr,K); N,r = B.shape
     PBn_op = (B @ Gi) @ B.conj().T          # (N,N) only for small configs
     out=[]
@@ -21,6 +24,10 @@ def R_meas(Nr,K,rhos,T=2000):
         raw = np.einsum('ti,ti->t', e_raw.conj(), e_raw).real
         Pn  = n @ PBn_op.T
         e_st = -Bd + Pn
+        if nu > 0:
+            gv = (rng.standard_normal((T,N))+1j*rng.standard_normal((T,N)))/np.sqrt(2)
+            xg = gv - gv @ PBn_op.T                      # P_perp g, E||.||^2 = N-r
+            e_st = e_st - xg*np.sqrt(nu*N*sn2/(N-r))
         st  = np.einsum('ti,ti->t', e_st.conj(), e_st).real
         out.append(raw.mean()/st.mean())
     return np.array(out)
@@ -46,6 +53,21 @@ for Nr,K,col,mk,lab in cfgs:
     ax[0].axvline(rs,color=col,lw=.6,ls=(0,(3,2)),zorder=1,ymax=.58)
     ax[0].annotate(rf"$1/\kappa={round(1/kap)}$",xy=(1.15e-4,1/kap*1.28),color=col,fontsize=6.5)
     ax[0].annotate(r"$\rho^\star$",xy=(rs,200),ha="center",color=col,fontsize=6.8)
+# Prop. 1 with nu > 0: the ceiling falls from 1/kappa to 1/(kappa+nu).
+# Its own generator, so that adding these curves does not shift the draws panel
+# (b) below takes from the module-level stream.
+rng_nu = np.random.default_rng(23)
+for nu,ls in ((0.05,(0,(4,2))),(0.5,(0,(1.5,1.5)))):
+    kap=4/(4*64); Rp=(1+rho_f)/(rho_f+kap+nu)
+    Rm=R_meas(4,64,rho_m,T=20000,nu=nu,rng=rng_nu)
+    ax[0].plot(rho_f,Rp,color=C1,lw=1.1,ls=ls,zorder=3)
+    ax[0].plot(rho_m,Rm,ls="none",marker="o",ms=3,mfc="white",mec=C1,mew=.9,zorder=4)
+    np.savetxt(f'figs/data/figA_pred_4_64_nu{nu:g}.dat', np.c_[rho_f,Rp],
+               header='rho R', comments='')
+    np.savetxt(f'figs/data/figA_mc_4_64_nu{nu:g}.dat', np.c_[rho_m,Rm],
+               header='rho R', comments='')
+    print(f"nu={nu:g}: ceiling 1/(kappa+nu) = {1/(kap+nu):.2f}, "
+          f"MC at rho={rho_m[0]:.0e} = {Rm[0]:.2f}")
 ax[0].axhline(1,color=MUT,lw=.6,ls="--",zorder=1)
 ax[0].annotate("no benefit",xy=(9e1,1.9),ha="right",color=MUT,fontsize=6.5)
 ax[0].set_xscale("log"); ax[0].set_yscale("log"); ax[0].set_xlim(1e-4,1e2); ax[0].set_ylim(.7,2600)
