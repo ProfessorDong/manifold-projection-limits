@@ -73,6 +73,7 @@ of Proposition 5 computed on the same target draws.
 | VI | collinear amplitude floor | `sim/exp_collinear.py` |
 | VI | the floor binds unbiased estimators only | `sim/verify_round2_claims.py` |
 | VII-B | measured residual shares and order sensitivity | `sim/table_real.py` |
+| VII-B | per-snapshot dispersion of those shares (IQR, min-max) | `sim/table_real.py` |
 | VII-B | receiver noise variance from the delay-domain floor | `sim/noise_floor.py` |
 | VII-B | which offset convention is applied, and its cost | `sim/verify_offset_convention.py` |
 | VII-B | what the 32 selected snapshots cover | `sim/verify_offset_convention.py` |

@@ -46,6 +46,12 @@ if __name__=="__main__":
         print("share    :"+"".join(f"{x:>9.3f}" for x in m))
         print("dB       :"+"".join(f"{10*np.log10(x/(1-x)):>+9.1f}" for x in m))
         print("enr-wtd  :"+"".join(f"{x:>9.3f}" for x in w))
+        # dispersion across the snapshots: a mean alone hides the spread, and the
+        # 0152 subset in particular covers a narrow spatial extent
+        q1,q3=np.percentile(f,25,axis=0),np.percentile(f,75,axis=0)
+        print("IQR      :"+"".join(f"{x:>9.3f}" for x in q3-q1))
+        print("min-max  :"+"".join(f"{a:.2f}-{b:.2f}".rjust(9)
+                                   for a,b in zip(f.min(0),f.max(0))))
         print(f"noise-corrected (nu={nv[lab]:.4f}):"
               +"".join(f"{x-nv[lab]:>9.3f}" for x in m))
         f3,_=shares(E,path,EL3,ORDERS)
